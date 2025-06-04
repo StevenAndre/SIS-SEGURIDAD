@@ -1,0 +1,105 @@
+/* user-register.component.css (sin variables) */
+.register-page {
+  min-height: 100vh;
+  background-color: #f3f4f6;       /* antes: var(--gris-claro) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;                    /* antes: var(--padding-general) */
+}
+
+.register-box {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 28rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.register-title {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #2563eb;                   /* antes: var(--azul-primario) */
+}
+
+/* ===== Formulario ===== */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #374151;                   /* antes: var(--gris-texto) */
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e5e7eb;       /* antes: var(--gris-input) */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 2px #2563eb;   /* antes: var(--azul-primario) */
+}
+
+/* ===== Botón de envío ===== */
+.submit-button {
+  width: 100%;
+  background-color: #10b981;       /* antes: var(--verde-acento) */
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.submit-button:disabled {
+  filter: brightness(0.7);
+  cursor: not-allowed;
+}
+
+.submit-button:hover:not(:disabled) {
+  filter: brightness(0.9);
+}
+
+/* ===== Mensajes de error ===== */
+.error {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #dc2626;                   /* antes: var(--rojo-error) */
+}
+
+/* ===== Adaptabilidad (responsive) ===== */
+@media (max-width: 640px) {
+  .register-box {
+    padding: 1.5rem;
+  }
+
+  .register-title {
+    font-size: 1.5rem;
+  }
+}
+.login-redirect {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280; /* gris medio */
+  margin-top: 1rem;
+}
+
+.login-link {
+  color: #2563eb; /* azul primario */
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -1,0 +1,50 @@
+<div class="login-container">
+  <div class="login-box">
+    <h1 class="login-title">
+      Farmacia Especializada 24 horas
+    </h1>
+    <form>
+      <div class="form-group">
+        <label for="username" class="form-label">Usuario</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="form-input"
+          placeholder="Ingrese su usuario"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          placeholder="Ingrese su contraseña"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <div class="g-recaptcha" data-sitekey="6LebM1UrAAAAAPMlZcIItSJk72LBIBcg7Ctk9HgQ"></div>
+      </div>
+
+      <button type="submit" class="login-button">
+        Iniciar sesión
+      </button>
+    </form>
+
+    <p class="forgot-password">
+      ¿Olvidaste tu contraseña?
+      <a href="#" class="forgot-link">Recupérala aquí</a>
+    </p>
+
+    <div class="register-prompt">
+      <p>¿Aún no tienes una cuenta?</p>
+      <button class="register-button"  routerLink="/register-user" >Regístrate aquí</button>
+    </div>
+  </div>
+</div>

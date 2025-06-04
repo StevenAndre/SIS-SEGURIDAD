@@ -1,0 +1,102 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6; /* gray-100 */
+  padding: 1rem;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 28rem; /* similar a Tailwind max-w-md */
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.login-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #2563eb; /* blue-600 */
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151; /* gray-700 */
+}
+
+.form-input {
+  margin-top: 0.25rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.75rem;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 2px #2563eb;
+}
+
+.login-button {
+  width: 100%;
+  background-color: #10b981; /* green-500 */
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #059669; /* green-600 */
+}
+
+.forgot-password {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280; /* gray-500 */
+  margin-top: 1rem;
+}
+
+.forgot-link {
+  color: #2563eb; /* blue-600 */
+  text-decoration: underline;
+}
+
+.register-prompt {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #374151; /* gray-700 */
+}
+
+.register-button {
+  margin-top: 0.5rem;
+  background-color: #2563eb; /* blue-600 */
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #1d4ed8; /* blue-700 */
+}

@@ -1,0 +1,103 @@
+<div class="register-page">
+  <div class="register-box">
+    <h2 class="register-title">Crear Cuenta</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Nombre completo -->
+      <div class="form-group">
+        <label for="fullName" class="form-label">Nombre completo *</label>
+        <input
+          type="text"
+          id="fullName"
+          formControlName="fullName"
+          class="form-input"
+          placeholder="Juan Pérez"
+        />
+        <div
+          class="error"
+          *ngIf="
+            registerForm.get('fullName')?.touched &&
+            registerForm.get('fullName')?.hasError('required')
+          "
+        >
+          El nombre completo es obligatorio.
+        </div>
+      </div>
+
+      <!-- Correo electrónico -->
+      <div class="form-group">
+        <label for="email" class="form-label">Correo electrónico *</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="form-input"
+          placeholder="usuario@dominio.com"
+        />
+        <div
+          class="error"
+          *ngIf="
+            registerForm.get('email')?.touched &&
+            registerForm.get('email')?.hasError('required')
+          "
+        >
+          El correo electrónico es obligatorio.
+        </div>
+        <div
+          class="error"
+          *ngIf="
+            registerForm.get('email')?.touched &&
+            registerForm.get('email')?.hasError('email')
+          "
+        >
+          Formato de correo inválido.
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña *</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="form-input"
+          placeholder="Mínimo 8 caracteres"
+        />
+        <div
+          class="error"
+          *ngIf="
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.hasError('required')
+          "
+        >
+          La contraseña es obligatoria.
+        </div>
+        <div
+          class="error"
+          *ngIf="
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.hasError('pattern')
+          "
+        >
+          La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial.
+        </div>
+      </div>
+
+      <!-- Botón de envío -->
+      <div class="form-group">
+        <button
+          type="submit"
+          class="submit-button"
+          [disabled]="registerForm.invalid"
+        >
+          Registrarme
+        </button>
+      </div>
+    </form>
+    <p class="login-redirect">
+      ¿Ya tienes una cuenta?
+      <a routerLink="/login" class="login-link">Inicia sesión aquí</a>
+    </p>
+  </div>
+</div>

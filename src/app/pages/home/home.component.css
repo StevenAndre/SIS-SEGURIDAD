@@ -1,0 +1,102 @@
+/* ===== Colores específicos ===== */
+.home-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f3f4f6; /* gris muy claro de fondo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Capa semitransparente (opcional) */
+.home-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Puedes cambiar este color por una imagen de fondo:
+     background: url('/assets/fondo-farmacia.jpg') no-repeat center/cover; */
+  background-color: rgba(0, 128, 0, 0.1); /* verde muy suave semitransparente */
+  z-index: 1;
+}
+
+/* Contenedor del contenido centrado */
+.home-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+
+.home-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1d4ed8; /* azul profesional */
+  margin-bottom: 0.5rem;
+}
+
+.home-subtitle {
+  font-size: 1.25rem;
+  color: #374151; /* gris oscuro para subtítulo */
+  margin-bottom: 2rem;
+}
+
+/* Botonera principal */
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos generales para los botones */
+.btn-home {
+  width: 12rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+/* Botón “Iniciar Sesión” */
+.btn-login {
+  background-color: #10b981; /* verde farmacia */
+  color: white;
+}
+
+.btn-login:hover {
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+}
+
+/* Botón “Registrarse” */
+.btn-register {
+  background-color: #2563eb; /* azul profesional */
+  color: white;
+}
+
+.btn-register:hover {
+  filter: brightness(0.9);
+  transform: translateY(-2px);
+}
+
+/* ===== Responsive (pantallas pequeñas) ===== */
+@media (max-width: 640px) {
+  .home-title {
+    font-size: 2.25rem;
+  }
+  .home-subtitle {
+    font-size: 1rem;
+  }
+  .btn-home {
+    width: 10rem;
+    font-size: 1rem;
+  }
+}
