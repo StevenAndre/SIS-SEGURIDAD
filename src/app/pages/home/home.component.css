@@ -3,23 +3,22 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  background-color: #f3f4f6; /* gris muy claro de fondo */
+  background-color: #e6f7f0; /* Verde claro de fondo */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-/* Capa semitransparente (opcional) */
+/* Capa semitransparente con imagen de fondo */
 .home-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* Puedes cambiar este color por una imagen de fondo:
-     background: url('/assets/fondo-farmacia.jpg') no-repeat center/cover; */
-  background-color: rgba(0, 128, 0, 0.1); /* verde muy suave semitransparente */
+  background: url('/assets/fondo-farmacia.jpg') no-repeat center/cover;
+  opacity: 0.5; /* Ajusta la opacidad según prefieras */
   z-index: 1;
 }
 
@@ -28,19 +27,21 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 2rem;
+  padding: 4rem; /* Más espacio alrededor del contenido */
 }
 
+/* Título principal */
 .home-title {
   font-size: 3rem;
   font-weight: bold;
-  color: #1d4ed8; /* azul profesional */
+  color: #006400; /* Verde oscuro para el título */
   margin-bottom: 0.5rem;
 }
 
+/* Subtítulo */
 .home-subtitle {
   font-size: 1.25rem;
-  color: #374151; /* gris oscuro para subtítulo */
+  color: #333333; /* Gris oscuro para el subtítulo */
   margin-bottom: 2rem;
 }
 
@@ -53,6 +54,13 @@
   justify-content: center;
 }
 
+/* Ajuste para pantallas más grandes: botones en fila */
+@media (min-width: 640px) {
+  .home-buttons {
+    flex-direction: row;
+  }
+}
+
 /* Estilos generales para los botones */
 .btn-home {
   width: 12rem;
@@ -62,29 +70,67 @@
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: filter 0.2s ease, transform 0.2s ease;
+  transition: transform 0.3s ease, filter 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Espacio entre icono y texto */
 }
 
 /* Botón “Iniciar Sesión” */
 .btn-login {
-  background-color: #10b981; /* verde farmacia */
+  background-color: #10b981; /* Verde farmacia */
   color: white;
 }
 
 .btn-login:hover {
   filter: brightness(0.9);
-  transform: translateY(-2px);
+  transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
 }
 
 /* Botón “Registrarse” */
 .btn-register {
-  background-color: #2563eb; /* azul profesional */
+  background-color: #2563eb; /* Azul profesional */
   color: white;
 }
 
 .btn-register:hover {
   filter: brightness(0.9);
-  transform: translateY(-2px);
+  transform: scale(1.05); /* Efecto de agrandamiento al pasar el mouse */
+}
+
+/* ===== Header ===== */
+.header {
+  background-color: #006400; /* Verde oscuro */
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  height: 50px; /* Ajusta según el tamaño de tu logo */
+}
+
+.nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 1rem;
+  font-weight: 500;
+}
+
+/* ===== Footer ===== */
+.footer {
+  background-color: #006400; /* Verde oscuro */
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.social-links a {
+  color: white;
+  margin: 0 0.5rem;
+  font-size: 1.5rem;
 }
 
 /* ===== Responsive (pantallas pequeñas) ===== */
@@ -99,4 +145,18 @@
     width: 10rem;
     font-size: 1rem;
   }
+  .header {
+    flex-direction: column;
+  }
+  .nav {
+    margin-top: 1rem;
+  }
+}
+
+.header-title {
+  font-size: 2.5rem;           /* Tamaño de fuente grande */
+  font-weight: bold;           /* Negrita para mayor énfasis */
+  color: #f5f5f5;              /* Verde oscuro, típico de farmacias */
+  margin: 0;                   /* Elimina márgenes por defecto */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar */
 }
