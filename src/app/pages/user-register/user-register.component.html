@@ -84,6 +84,36 @@
         </div>
       </div>
 
+      <!-- Confirmar contraseña -->
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirmar contraseña *</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          class="form-input"
+          placeholder="Repite tu contraseña"
+        />
+        <div
+          class="error"
+          *ngIf="
+            registerForm.get('confirmPassword')?.touched &&
+            registerForm.get('confirmPassword')?.hasError('required')
+          "
+        >
+          La confirmación de la contraseña es obligatoria.
+        </div>
+        <div
+          class="error"
+          *ngIf="
+            registerForm.get('confirmPassword')?.touched &&
+            registerForm.hasError('mismatch')
+          "
+        >
+          Las contraseñas no coinciden.
+        </div>
+      </div>
+
       <!-- Botón de envío -->
       <div class="form-group">
         <button
@@ -100,4 +130,8 @@
       <a routerLink="/login" class="login-link">Inicia sesión aquí</a>
     </p>
   </div>
+</div>
+<div class="toast" *ngIf="showToast" [class.hide]="isHiding">
+  <span class="toast-icon">⚠️</span>
+  {{ toastMessage }}
 </div>

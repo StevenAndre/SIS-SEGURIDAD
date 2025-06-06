@@ -1,0 +1,44 @@
+<div class="verification-container">
+  <div class="verification-box">
+    <h2 class="verification-title">Verificación de Código</h2>
+    <p class="verification-subtitle">Ingrese el código de 6 dígitos enviado a su correo</p>
+    
+    <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input 
+          type="text" 
+          formControlName="code" 
+          class="form-input"
+          placeholder="Código de verificación"
+          maxlength="6"
+          pattern="[0-9]*"
+          inputmode="numeric"
+          [disabled]="isLoading"
+        />
+        <div class="error" *ngIf="verificationForm.get('code')?.touched && verificationForm.get('code')?.hasError('required')">
+          El código es obligatorio
+        </div>
+        <div class="error" *ngIf="verificationForm.get('code')?.touched && verificationForm.get('code')?.hasError('pattern')">
+          Solo se permiten números
+        </div>
+        <div class="error" *ngIf="verificationForm.get('code')?.touched && verificationForm.get('code')?.hasError('minlength')">
+          El código debe tener 6 dígitos
+        </div>
+      </div>
+
+      <button type="submit" class="verify-button" [disabled]="verificationForm.invalid || isLoading">
+        <div class="spinner" *ngIf="isLoading"></div>
+        {{ isLoading ? 'Verificando...' : 'Verificar' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" 
+       [class.show]="isToastVisible" 
+       [class.hide]="isHiding"
+       [class.success]="isSuccessToast">
+    <span class="toast-icon">⚠️</span>
+    {{ toastMessage }}
+  </div>
+</div> 

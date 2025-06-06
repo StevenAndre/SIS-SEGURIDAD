@@ -1,1 +1,84 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Header -->
+ <header class="header">
+  <div class="header-left">
+    <span class="app-title">Sistema de Gestión Gfarm</span>
+    <span class="version">Versión 1.0.0 - 2025</span>
+  </div>
+
+  <div class="header-center">
+    <span>Código Usuario: code</span>
+  </div>
+
+  <div class="header-right user-info">
+    <span class="welcome-message">Bienvenido{{ isAdmin ? ' Administrador' : ' Usuario' }}, {{ userFullName }}</span>
+    <button class="logout-button" (click)="logout()">Cerrar Sesión</button>
+  </div>
+</header>
+
+
+  <!-- Contenedor principal con sidebar y área de contenido -->
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="sidebar-title">GESTIÓN GFARM</h2>
+      <ul class="menu-list">
+        <!-- Admin menu items -->
+        <ng-container *ngIf="isAdmin">
+          <li class="menu-item">COMPRAS</li>
+          <li class="menu-item">PUNTO DE VENTA</li>
+          <li class="menu-item">CATÁLOGOS</li>
+          <li class="menu-item">PROCESOS</li>
+          <li class="menu-item">CONSULTAS</li>
+          <li class="menu-item">FARMACIA</li>
+          <li class="menu-item">HISTORIAL</li>
+          <li class="menu-item" (click)="setView('users')">USUARIOS</li>
+          <li class="menu-item">CONFIGURACIÓN</li>
+        </ng-container>
+        
+        <!-- User menu items -->
+        <ng-container *ngIf="!isAdmin">
+          <li class="menu-item">MI PERFIL</li>
+          <li class="menu-item">AJUSTES</li>
+        </ng-container>
+        
+        <li class="menu-item" (click)="logout()">SALIR</li>
+      </ul>
+    </aside>
+
+    <!-- Área de contenido principal -->
+    <main class="content-area">
+      <!-- Toolbar -->
+      <div class="toolbar" *ngIf="isAdmin">
+        <button class="toolbar-button">
+          <i class="fas fa-building"></i> Detalles de la Empresa
+        </button>
+        <button class="toolbar-button">
+          <i class="fas fa-broom"></i> Limpiar BD
+        </button>
+        <button class="toolbar-button">
+          <i class="fas fa-database"></i> Gestión de Backups
+        </button>
+        <button class="toolbar-button">
+          <i class="fas fa-cog"></i> Extras
+        </button>
+        <button class="toolbar-button">
+          <i class="fas fa-network-wired"></i> Sucursales
+        </button>
+        <button class="toolbar-button">
+          <i class="fas fa-clock"></i> Contenedor Sunat
+        </button>
+        <button class="toolbar-button">
+          <i class="fas fa-file-alt"></i> Enviar al TXT Sunat
+        </button>
+        <button class="toolbar-button">
+          <i class="fas fa-sync-alt"></i> Actualizar archivos
+        </button>
+      </div>
+      <!-- Contenido principal -->
+      <div class="main-content">
+        <app-users *ngIf="currentView === 'users'"></app-users>
+      </div>
+    </main>
+  </div>
+</div>

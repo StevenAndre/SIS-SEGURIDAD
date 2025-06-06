@@ -3,17 +3,21 @@
     <h1 class="login-title">
       Farmacia Especializada 24 horas
     </h1>
-    <form>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="username" class="form-label">Usuario</label>
         <input
           type="text"
           id="username"
-          name="username"
+          formControlName="username"
           class="form-input"
           placeholder="Ingrese su usuario"
           required
+          [disabled]="isLoading"
         />
+        <div class="error" *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')">
+          El usuario es obligatorio
+        </div>
       </div>
 
       <div class="form-group">
@@ -21,19 +25,24 @@
         <input
           type="password"
           id="password"
-          name="password"
+          formControlName="password"
           class="form-input"
           placeholder="Ingrese su contraseña"
           required
+          [disabled]="isLoading"
         />
+        <div class="error" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')">
+          La contraseña es obligatoria
+        </div>
       </div>
 
-      <div class="form-group">
-        <div class="g-recaptcha" data-sitekey="6LebM1UrAAAAAPMlZcIItSJk72LBIBcg7Ctk9HgQ"></div>
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
       </div>
 
-      <button type="submit" class="login-button">
-        Iniciar sesión
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+        <div class="spinner" *ngIf="isLoading"></div>
+        {{ isLoading ? 'Iniciando sesión...' : 'Iniciar sesión' }}
       </button>
     </form>
 
@@ -44,7 +53,13 @@
 
     <div class="register-prompt">
       <p>¿Aún no tienes una cuenta?</p>
-      <button class="register-button"  routerLink="/register-user" >Regístrate aquí</button>
+      <button class="register-button" routerLink="/register-user">Regístrate aquí</button>
     </div>
   </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" *ngIf="showToast" [class.hide]="isHiding">
+  <span class="toast-icon">⚠️</span>
+  {{ toastMessage }}
 </div>

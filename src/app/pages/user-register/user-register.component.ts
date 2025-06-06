@@ -6,44 +6,55 @@ import {
   Validators,
   AbstractControl,
   ValidationErrors,
-   ReactiveFormsModule
+   ReactiveFormsModule,
+   ValidatorFn
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './user-register.component.html',
   styleUrls: ['./user-register.component.css']
 })
 export class UserRegisterComponent implements OnInit {
   registerForm!: FormGroup;
   smsSent: boolean = false;
+  isLoading = false;
+  showToast = false;
+  isHiding = false;
+  toastMessage = '';
+  isSuccessToast = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       fullName: ['', [Validators.required]],
       email: [
         '',
-        [Validators.required, Validators.email],
-        // aquí podrías poner validación asíncrona para chequear unicidad
+        [Validators.required, Validators.email]
       ],
       password: [
         '',
         [
           Validators.required,
           Validators.pattern(
-            // Al menos 8 caracteres, una mayúscula, un número y un carácter especial
             /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]).{8,}$/
           ),
         ],
       ],
-      authMethod: ['none'], // 'none' (email), 'google', 'facebook', 'phone'
-      phone: [''], // se validará sólo si authMethod === 'phone'
-    });
+      confirmPassword: ['', [Validators.required]],
+      authMethod: ['none'],
+      phone: ['']
+    }, { validators: this.passwordMatchValidator() });
 
     // Escucha cambios en authMethod para agregar/quitar validación de phone
     this.registerForm.get('authMethod')?.valueChanges.subscribe((method) => {
@@ -60,16 +71,27 @@ export class UserRegisterComponent implements OnInit {
   }
 
   /**
+   * Validador personalizado para verificar que las contraseñas coincidan
+   */
+  passwordMatchValidator(): ValidatorFn {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const password = formGroup.get('password')?.value;
+      const confirmPassword = formGroup.get('confirmPassword')?.value;
+      return password && confirmPassword && password !== confirmPassword
+        ? { mismatch: true }
+        : null;
+    };
+  }
+
+  /**
    * Envía un código por SMS al número indicado.
    * En un caso real, aquí llamarías a tu servicio de backend que dispara el SMS.
    */
   sendPhoneCode() {
     const phoneValue = this.registerForm.get('phone')?.value;
     if (phoneValue && this.registerForm.get('phone')?.valid) {
-      // Simulación de envío:
       console.log('Enviando código SMS a:', phoneValue);
       this.smsSent = true;
-      // En producción, llama a un servicio que envíe el SMS real y capture la respuesta/errores.
     }
   }
 
@@ -87,12 +109,52 @@ export class UserRegisterComponent implements OnInit {
       return;
     }
 
-    // Extraemos los valores para mostrarlos (en producción, envías al backend)
-    const formValues = this.registerForm.value;
-    console.log('Formulario válido. Datos a enviar:', formValues);
+    this.isLoading = true;
+    const formData = this.registerForm.value;
+    
+    // Usar el email como username y agregar el rol
+    const userData = {
+      fullname: formData.fullName,
+      email: formData.email,
+      username: formData.email, // Usar email como username
+      password: formData.password,
+      roles:[1] 
+    };
 
-    // Ejemplo: Si authMethod es 'none', envías email-verificación.
-    // Si es 'google' o 'facebook', rediriges al flujo de OAuth.
-    // Si es 'phone', verificas el OTP que el usuario ingrese en otro paso.
+    this.authService.register(userData).subscribe({
+      next: (response) => {
+        this.showToastMessage('Usuario registrado exitosamente', true);
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1000);
+      },
+      error: (error) => {
+        console.error('Error en el registro:', error);
+        console.error('Error en el registro: code: ', error.status);
+         console.error('Error en el registro: if: ',error.status === 400);
+        if (error.status === 400) {
+          this.showToastMessage('El email ya está registrado');
+        } else {
+          this.showToastMessage('Error al registrar usuario');
+        }
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
+
+  showToastMessage(message: string, isSuccess: boolean = false) {
+    this.toastMessage = message;
+    this.showToast = true;
+    this.isHiding = false;
+    this.isSuccessToast = isSuccess;
+
+    setTimeout(() => {
+      this.isHiding = true;
+      setTimeout(() => {
+        this.showToast = false;
+      }, 300);
+    }, 3000);
   }
 }

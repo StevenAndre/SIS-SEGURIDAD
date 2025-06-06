@@ -1,0 +1,151 @@
+/* Contenedor principal del dashboard */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header */
+.header {
+  background-color: #10b981; /* Azul oscuro */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 50px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-left .version {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.header-center, .header-right {
+  font-size: 14px;
+}
+
+/* Contenedor principal para sidebar y área de contenido */
+.main-container {
+  display: flex;
+  flex: 1;
+  margin-top: 50px; /* Espacio para el header fijo */
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #10b981; /* Azul oscuro */
+  color: white;
+  width: 200px;
+  padding: 20px;
+  position: fixed;
+  top: 50px;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.sidebar-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+.menu-item:hover {
+  background-color: rgb(50, 46, 46); /* Color más claro al hacer hover */
+}
+
+/* Opcional: Estilo para el ítem activo si deseas mantenerlo */
+.menu-item.active {
+  background-color: #059669; /* Un tono diferente para el ítem activo */
+}
+
+/* Área de contenido principal */
+.content-area {
+  flex: 1;
+  background-color: #F5F5F5; /* Gris claro */
+  padding: 20px;
+  margin-left: 200px; /* Espacio para el sidebar fijo */
+}
+
+/* Toolbar */
+.toolbar {
+  background-color: #FFFFFF; /* Blanco */
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  border-bottom: 1px solid #D3D3D3; /* Borde inferior gris */
+}
+
+.toolbar-button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-button i {
+  margin-right: 5px;
+}
+
+/* Estilos adicionales para el contenido principal */
+.main-content {
+  margin-top: 20px;
+  /* Aquí puedes agregar estilos para el contenido dinámico */
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-info .welcome-message {
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.logout-button {
+  background-color: #ffffff;
+  color: #10b981;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+.app-title {
+  font-weight: bold;
+  font-size: 16px;
+}

@@ -1,0 +1,50 @@
+<div class="users-container">
+  <h2>Gestión de Usuarios</h2>
+
+  <div *ngIf="loading" class="loading">
+    Cargando usuarios...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="users-table-container">
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre Completo</th>
+          <th>Usuario</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span *ngIf="isAdmin(user)" class="admin-badge">Administrador</span>
+            <span *ngIf="!isAdmin(user)" class="user-badge">Usuario</span>
+          </td>
+          <td>
+            <div class="admin-toggle">
+              <label class="switch">
+                <input type="checkbox" 
+                       [checked]="isAdmin(user)"
+                       (change)="toggleAdmin(user)"
+                       [disabled]="isAdmin(user)">
+                <span class="slider round"></span>
+              </label>
+              <span class="toggle-label">{{ isAdmin(user) ? 'Admin' : 'Hacer Admin' }}</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> 
