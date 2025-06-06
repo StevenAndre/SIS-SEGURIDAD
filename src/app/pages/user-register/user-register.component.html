@@ -119,9 +119,10 @@
         <button
           type="submit"
           class="submit-button"
-          [disabled]="registerForm.invalid"
+          [disabled]="registerForm.invalid || isLoading"
         >
-          Registrarme
+          <div class="spinner" *ngIf="isLoading"></div>
+          <span>{{ isLoading ? 'Registrando...' : 'Registrarme' }}</span>
         </button>
       </div>
     </form>
@@ -131,7 +132,7 @@
     </p>
   </div>
 </div>
-<div class="toast" *ngIf="showToast" [class.hide]="isHiding">
-  <span class="toast-icon">⚠️</span>
+<div class="toast" *ngIf="showToast" [class.hide]="isHiding" [class.success]="isSuccessToast">
+  <span class="toast-icon">{{ isSuccessToast ? '✅' : '⚠️' }}</span>
   {{ toastMessage }}
 </div>

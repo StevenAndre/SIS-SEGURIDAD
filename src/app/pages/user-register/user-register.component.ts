@@ -123,15 +123,13 @@ export class UserRegisterComponent implements OnInit {
 
     this.authService.register(userData).subscribe({
       next: (response) => {
-        this.showToastMessage('Usuario registrado exitosamente', true);
+        this.showToastMessage('Usuario registrado exitosamente. Por favor, revise su correo electrónico para confirmar su cuenta.', true);
         setTimeout(() => {
           this.router.navigate(['/login']);
-        }, 1000);
+        }, 3000);
       },
       error: (error) => {
         console.error('Error en el registro:', error);
-        console.error('Error en el registro: code: ', error.status);
-         console.error('Error en el registro: if: ',error.status === 400);
         if (error.status === 400) {
           this.showToastMessage('El email ya está registrado');
         } else {

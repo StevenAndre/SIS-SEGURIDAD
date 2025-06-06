@@ -54,23 +54,29 @@
 /* ===== Botón de envío ===== */
 .submit-button {
   width: 100%;
-  background-color: #10b981;       /* antes: var(--verde-acento) */
+  background-color: #10b981;
   color: white;
   font-weight: 600;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
   border: none;
-  border-radius: 0.5rem;
   cursor: pointer;
-  transition: filter 0.2s ease;
-}
-
-.submit-button:disabled {
-  filter: brightness(0.7);
-  cursor: not-allowed;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
 }
 
 .submit-button:hover:not(:disabled) {
-  filter: brightness(0.9);
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
 }
 
 /* ===== Mensajes de error ===== */
@@ -104,6 +110,25 @@
   cursor: pointer;
 }
 
+/* Spinner styles */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toast notification styles */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -119,6 +144,10 @@
   gap: 0.5rem;
   animation: slideIn 0.3s ease-out;
   z-index: 1000;
+}
+
+.toast.success {
+  background-color: #10b981;
 }
 
 .toast-icon {
