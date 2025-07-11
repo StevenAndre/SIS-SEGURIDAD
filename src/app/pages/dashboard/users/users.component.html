@@ -42,9 +42,37 @@
               </label>
               <span class="toggle-label">{{ isAdmin(user) ? 'Admin' : 'Hacer Admin' }}</span>
             </div>
+            <button class="session-btn" (click)="openSessionModal(user)">Ver sesiones</button>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- Modal de sesiones -->
+<div class="modal-backdrop" *ngIf="showSessionModal">
+  <div class="modal">
+    <h3>Sesiones de {{ selectedUser?.fullName }}</h3>
+    <button class="close-btn" (click)="closeSessionModal()">&times;</button>
+    <table class="sessions-table" *ngIf="userSessions.length > 0">
+      <thead>
+        <tr>
+          <th>ID Sesión</th>
+          <th>Inicio</th>
+          <th>Fin</th>
+          <th>Duración</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let session of userSessions">
+          <td>{{ session.sessionId }}</td>
+          <td>{{ session.loginTime }}</td>
+          <td>{{ session.logoutTime || 'Activa' }}</td>
+          <td>{{ session.duration }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="userSessions.length === 0">No hay sesiones para este usuario.</div>
   </div>
 </div> 

@@ -36,5 +36,13 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: 'home'
+  },
+   {
+    path: 'main',
+    redirectTo: 'dashboard'
+  },
+  {
+    path: '**',
+    redirectTo: 'home'
   }
 ];

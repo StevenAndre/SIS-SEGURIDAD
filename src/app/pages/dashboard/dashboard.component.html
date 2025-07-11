@@ -33,7 +33,10 @@
           <li class="menu-item">FARMACIA</li>
           <li class="menu-item">HISTORIAL</li>
           <li class="menu-item" (click)="setView('users')">USUARIOS</li>
+          <li class="menu-item" (click)="setView('sessions')">SESIONES</li>
+          <li class="menu-item" (click)="setView('doc-sign')">FIRMAR DOCUMENTOS</li>
           <li class="menu-item">CONFIGURACIÓN</li>
+
         </ng-container>
         
         <!-- User menu items -->
@@ -43,7 +46,7 @@
         </ng-container>
         
         <li class="menu-item" (click)="logout()">SALIR</li>
-      </ul>
+      </ul>  
     </aside>
 
     <!-- Área de contenido principal -->
@@ -78,7 +81,18 @@
       <!-- Contenido principal -->
       <div class="main-content">
         <app-users *ngIf="currentView === 'users'"></app-users>
+        <app-sessions *ngIf="currentView === 'sessions'"></app-sessions>
+        <app-doc-sign *ngIf="currentView === 'doc-sign'"></app-doc-sign>
       </div>
     </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" 
+       [class.show]="isToastVisible" 
+       [class.hide]="isHiding"
+       [class.success]="isSuccessToast">
+    <span class="toast-icon">⚠️</span>
+    {{ toastMessage }}
   </div>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { UserService, UserSessionDto } from '../../../services/user.service';
 
 interface RoleDto {
   id: number;
@@ -27,8 +28,11 @@ export class UsersComponent implements OnInit {
   users: UserDto[] = [];
   loading: boolean = true;
   error: string | null = null;
+  selectedUser: UserDto | null = null;
+  userSessions: UserSessionDto[] = [];
+  showSessionModal: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   ngOnInit() {
     this.loadUsers();
@@ -68,5 +72,25 @@ export class UsersComponent implements OnInit {
           }
         });
     }
+  }
+
+  openSessionModal(user: UserDto) {
+    this.selectedUser = user;
+    this.showSessionModal = true;
+    this.userSessions = [];
+    this.userService.getUserSessions(user.id).subscribe({
+      next: (sessions) => {
+        this.userSessions = sessions;
+      },
+      error: () => {
+        this.userSessions = [];
+      }
+    });
+  }
+
+  closeSessionModal() {
+    this.showSessionModal = false;
+    this.selectedUser = null;
+    this.userSessions = [];
   }
 } 

@@ -1,0 +1,26 @@
+<div class="sessions-container">
+  <h2>Sesiones activas y recientes</h2>
+  <div *ngIf="loading">Cargando sesiones...</div>
+  <div *ngIf="error">{{ error }}</div>
+  <table class="sessions-table" *ngIf="!loading && !error && sessions.length > 0">
+    <thead>
+      <tr>
+        <th>ID Sesión</th>
+        <th>Usuario</th>
+        <th>Inicio</th>
+        <th>Fin</th>
+        <th>Duración</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let session of sessions">
+        <td>{{ session.sessionId }}</td>
+        <td>{{ session.username || '-' }}</td>
+        <td>{{ session.loginTime }}</td>
+        <td>{{ session.logoutTime || 'Activa' }}</td>
+        <td>{{ formatISODurationFull(session.duration) }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!loading && !error && sessions.length === 0">No hay sesiones activas o recientes.</div>
+</div> 

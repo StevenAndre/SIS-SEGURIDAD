@@ -1,0 +1,304 @@
+<div class="doc-sign-container">
+  <h2>🔐 Firmar y Cifrar Documentos</h2>
+  
+  <!-- Información de clave pública -->
+  <div class="section info-section" *ngIf="publicKey">
+    <h3>🔑 Información de Clave Pública</h3>
+    <div class="key-info">
+      <strong>Algoritmo:</strong> RSA-2048<br>
+      <strong>Clave Pública:</strong>
+      <div class="key-display">
+        <textarea readonly>{{publicKey}}</textarea>
+        <button (click)="copyToClipboard(publicKey)" class="copy-btn">📋 Copiar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de cifrado -->
+  <div class="section">
+    <h3>🔒 Cifrar y Firmar Documento</h3>
+    
+    <div class="file-upload">
+      <input 
+        type="file" 
+        (change)="onFileSelected($event)" 
+        accept=".txt,.doc,.docx,.pdf,.json"
+        [disabled]="loadingEncrypt" 
+      />
+      <span *ngIf="selectedFile" class="file-selected">
+        📁 {{ selectedFile.name }} ({{ (selectedFile.size / 1024).toFixed(1) }} KB)
+      </span>
+    </div>
+    
+    <div class="button-group">
+      <button 
+        (click)="encryptDocument()" 
+        [disabled]="!selectedFile || loadingEncrypt"
+        class="primary-btn"
+      >
+        <span *ngIf="!loadingEncrypt">🔒 Cifrar y Firmar</span>
+        <span *ngIf="loadingEncrypt">⏳ Cifrando...</span>
+      </button>
+      
+      <button 
+        (click)="clearEncryptForm()" 
+        [disabled]="loadingEncrypt"
+        class="secondary-btn"
+      >
+        🗑️ Limpiar
+      </button>
+    </div>
+    
+    <div *ngIf="loadingEncrypt" class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Procesando documento...</span>
+    </div>
+    
+    <div 
+      *ngIf="encryptResult" 
+      [ngClass]="{
+        'success': encryptResult.status === 'success', 
+        'error': encryptResult.status === 'error'
+      }"
+      class="result-box"
+    >
+      <div *ngIf="encryptResult.status === 'success'">
+        <h4>✅ Documento cifrado y firmado exitosamente</h4>
+        
+        <div class="result-info">
+          <div class="info-row">
+            <strong>📄 Archivo:</strong> {{encryptResult.fileName}}
+          </div>
+          <div class="info-row">
+            <strong>👤 Firmado por:</strong> {{encryptResult.signedBy}}
+          </div>
+          <div class="info-row">
+            <strong>⏰ Fecha de firma:</strong> {{encryptResult.signatureTimestamp}}
+          </div>
+          <div class="info-row">
+            <strong>🔐 Hash de integridad:</strong>
+            <div class="hash-display">
+              <code>{{encryptResult.originalHash}}</code>
+              <button (click)="copyToClipboard(encryptResult.originalHash)" class="copy-btn">📋</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="encrypted-content">
+          <strong>📦 Documento Cifrado:</strong>
+          <textarea readonly>{{encryptResult.encryptedDocument}}</textarea>
+          <div class="content-actions">
+            <button (click)="copyToClipboard(encryptResult.encryptedDocument)" class="copy-btn">
+              📋 Copiar documento cifrado
+            </button>
+            <button (click)="downloadEncryptedFile()" class="download-btn">
+              💾 Descargar archivo cifrado
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="encryptResult.status === 'error'">
+        <h4>❌ Error al cifrar documento</h4>
+        <p>{{encryptResult.message}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de descifrado -->
+  <div class="section">
+    <h3>🔓 Descifrar Documento</h3>
+    
+    <div class="input-group">
+      <label for="decryptInput">Documento cifrado (Base64):</label>
+      <textarea 
+        id="decryptInput"
+        [(ngModel)]="decryptInput" 
+        placeholder="Pega aquí el documento cifrado en formato Base64..."
+        [disabled]="loadingDecrypt"
+        rows="4"
+      ></textarea>
+    </div>
+    
+    <div class="button-group">
+      <button 
+        (click)="decryptDocument()" 
+        [disabled]="!decryptInput || loadingDecrypt"
+        class="primary-btn"
+      >
+        <span *ngIf="!loadingDecrypt">🔓 Descifrar</span>
+        <span *ngIf="loadingDecrypt">⏳ Descifrando...</span>
+      </button>
+      
+      <button 
+        (click)="clearDecryptForm()" 
+        [disabled]="loadingDecrypt"
+        class="secondary-btn"
+      >
+        🗑️ Limpiar
+      </button>
+    </div>
+    
+    <div *ngIf="loadingDecrypt" class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Descifrando documento...</span>
+    </div>
+    
+    <div 
+      *ngIf="decryptResult" 
+      [ngClass]="{
+        'success': decryptResult.status === 'success', 
+        'error': decryptResult.status === 'error',
+        'warning': decryptResult.status === 'warning'
+      }"
+      class="result-box"
+    >
+      <div *ngIf="decryptResult.status === 'success' || decryptResult.status === 'warning'">
+        <h4>
+          <span *ngIf="decryptResult.status === 'success'">✅ Documento descifrado exitosamente</span>
+          <span *ngIf="decryptResult.status === 'warning'">⚠️ Documento descifrado con advertencias</span>
+        </h4>
+        
+        <div class="result-info">
+          <div class="info-row">
+            <strong>📄 Archivo:</strong> {{decryptResult.fileName}}
+          </div>
+          <div class="info-row">
+            <strong>👤 Firmado por:</strong> {{decryptResult.signedBy}}
+          </div>
+          <div class="info-row">
+            <strong>⏰ Fecha de firma:</strong> {{decryptResult.signatureTimestamp}}
+          </div>
+          <div class="info-row">
+            <strong>🔒 Integridad:</strong>
+            <span [ngClass]="{
+              'valid': decryptResult.integrityValid, 
+              'invalid': !decryptResult.integrityValid
+            }">
+              {{decryptResult.integrityValid ? '✅ Válida' : '❌ Comprometida'}}
+            </span>
+          </div>
+        </div>
+        
+        <div class="hash-comparison">
+          <div class="hash-row">
+            <strong>🔐 Hash original:</strong>
+            <div class="hash-display">
+              <code>{{decryptResult.originalHash}}</code>
+              <button (click)="copyToClipboard(decryptResult.originalHash)" class="copy-btn">📋</button>
+            </div>
+          </div>
+          <div class="hash-row">
+            <strong>🔍 Hash actual:</strong>
+            <div class="hash-display">
+              <code>{{decryptResult.currentHash}}</code>
+              <button (click)="copyToClipboard(decryptResult.currentHash)" class="copy-btn">📋</button>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="decryptResult.warning" class="warning-box">
+          ⚠️ {{decryptResult.warning}}
+        </div>
+        
+        <!-- Vista previa del contenido descifrado -->
+        <div class="content-preview">
+          <strong>📄 Vista previa del contenido descifrado:</strong>
+          <div class="preview-container">
+            <textarea readonly>{{getPreviewContent()}}</textarea>
+            <div class="preview-info">
+              <small>Tamaño: {{(decryptResult.content.length / 1024).toFixed(2)}} KB</small>
+              <small *ngIf="isBinaryFile(decryptResult.fileName)" class="binary-warning">
+                ⚠️ Archivo binario
+              </small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="content-actions">
+          <button (click)="downloadDecryptedFile()" class="download-btn">
+            💾 Descargar archivo descifrado
+          </button>
+          <button (click)="copyToClipboard(decryptResult.content)" class="copy-btn">
+            📋 Copiar contenido
+          </button>
+        </div>
+      </div>
+      
+      <div *ngIf="decryptResult.status === 'error'">
+        <h4>❌ Error al descifrar documento</h4>
+        <p>{{decryptResult.message}}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de verificación de firma -->
+  <div class="section">
+    <h3>🔍 Verificar Firma Digital</h3>
+    
+    <div class="input-group">
+      <label for="verifyInput">Documento cifrado para verificar:</label>
+      <textarea 
+        id="verifyInput"
+        [(ngModel)]="verifyInput" 
+        placeholder="Pega aquí el documento cifrado para verificar la firma..."
+        [disabled]="loadingVerify"
+        rows="4"
+      ></textarea>
+    </div>
+    
+    <div class="button-group">
+      <button 
+        (click)="verifySignature()" 
+        [disabled]="!verifyInput || loadingVerify"
+        class="primary-btn"
+      >
+        <span *ngIf="!loadingVerify">🔍 Verificar Firma</span>
+        <span *ngIf="loadingVerify">⏳ Verificando...</span>
+      </button>
+      
+      <button 
+        (click)="clearVerifyForm()" 
+        [disabled]="loadingVerify"
+        class="secondary-btn"
+      >
+        🗑️ Limpiar
+      </button>
+    </div>
+    
+    <div *ngIf="loadingVerify" class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Verificando firma digital...</span>
+    </div>
+    
+    <div 
+      *ngIf="verifyResult" 
+      [ngClass]="{
+        'success': verifyResult.status === 'success', 
+        'error': verifyResult.status === 'error'
+      }"
+      class="result-box"
+    >
+      <div *ngIf="verifyResult.status === 'success'">
+        <h4>✅ Firma digital verificada</h4>
+        
+        <div class="result-info">
+          <div class="info-row">
+            <strong>📄 Archivo:</strong> {{verifyResult.fileName}}
+          </div>
+          <div class="info-row">
+            <strong>👤 Firmado por:</strong> {{verifyResult.signedBy}}
+          </div>
+          <div class="info-row">
+            <strong>⏰ Fecha de firma:</strong> {{verifyResult.signatureTimestamp}}
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="verifyResult.status === 'error'">
+        <h4>❌ Error al verificar firma</h4>
+        <p>{{verifyResult.message}}</p>
+      </div>
+    </div>
+  </div>
+</div>

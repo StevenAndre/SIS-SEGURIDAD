@@ -63,8 +63,7 @@ export class AuthService {
     }
   }
 
-  logout(): void {
-    console.log('Logging out, removing token');
-    localStorage.removeItem(this.TOKEN_KEY);
+  logout(): Observable<any> {
+    return this.http.post(`${this.apiUrl}/logout`, {}, { responseType: 'text' });
   }
 } 
